@@ -67,3 +67,4 @@ whois==1.20240129.2            # Fetch WHOIS information for domain analysis
 wrapt==1.17.0                  # Function wrapper utilities (used by TensorFlow)
 xgboost==2.1.2                 # Gradient boosting for phishing detection ML models
 yara==1.7.7                    # YARA rules engine for phishing detection
+matplotlib==3.9.2              #visualizing model performance, such as training accuracy, loss curves, and confusion matrices
