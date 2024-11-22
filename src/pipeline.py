@@ -2,6 +2,8 @@ import logging
 from sklearn.model_selection import train_test_split
 from sklearn.utils import shuffle
 from sklearn.preprocessing import StandardScaler
+from imblearn.over_sampling import SMOTE
+import joblib
 from src.detection.yara_rules.phishing_rules_loader import update_phishing_lists, compile_yara_rules
 from src.detection.phishing_ml_model import train_ml_model, evaluate_ml_model
 from src.detection.phishing_ai_model import build_ai_model, plot_training_history, train_ai_model, evaluate_ai_model
@@ -13,7 +15,7 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(
 
 def run_pipeline():
     """
-    Main pipeline to update data, preprocess, train ML and AI models, 
+    Main pipeline to update data, preprocess, train ML and AI models,
     and evaluate YARA rules.
     """
     logging.info("Starting the phishing detection pipeline...")
@@ -51,18 +53,22 @@ def run_pipeline():
     combined_features = domains.append(urls, ignore_index=True)
     combined_features = shuffle(combined_features, random_state=42)  # Shuffle data for better training
 
+    # Save a sample of preprocessed data for debugging
+    combined_features.head().to_csv("preprocessed_sample.csv", index=False)
+    logging.info("Saved a sample of preprocessed data to 'preprocessed_sample.csv' for review.")
+
     # Step 4: Prepare features and labels for ML/AI models
     feature_columns = [
-        "length", 
-        "num_dots", 
-        "has_suspicious_keywords", 
-        "contains_ip", 
-        "num_special_chars", 
-        "has_encoded_chars", 
+        "length",
+        "num_dots",
+        "has_suspicious_keywords",
+        "contains_ip",
+        "num_special_chars",
+        "has_encoded_chars",
         "has_uncommon_tld",
         "entropy",  # Added entropy as a feature
     ]
-    
+
     if any(col not in combined_features.columns for col in feature_columns):
         logging.error("Some required feature columns are missing in the dataset.")
         return
@@ -82,12 +88,26 @@ def run_pipeline():
         logging.error(f"Error during data split: {e}")
         return
 
+    # Handle class imbalance using SMOTE
+    logging.info("Handling class imbalance using SMOTE...")
+    try:
+        smote = SMOTE(random_state=42)
+        X_train, y_train = smote.fit_resample(X_train, y_train)
+        logging.info(f"After SMOTE: X_train shape = {X_train.shape}, y_train shape = {y_train.shape}")
+    except Exception as e:
+        logging.error(f"Error during SMOTE resampling: {e}")
+        return
+
     # Step 5: Train and evaluate the ML model
     logging.info("Training the ML model...")
     try:
         ml_model = train_ml_model(X_train, y_train)
         logging.info("Evaluating the ML model...")
         evaluate_ml_model(ml_model, X_test, y_test)
+
+        # Save the trained ML model
+        joblib.dump(ml_model, "ml_phishing_model.pkl")
+        logging.info("Saved trained ML model to 'ml_phishing_model.pkl'.")
     except Exception as e:
         logging.error(f"Error in ML model training/evaluation: {e}")
 
@@ -98,6 +118,10 @@ def run_pipeline():
         history = train_ai_model(ai_model, X_train, y_train, X_val=X_test, y_val=y_test)
         logging.info("Evaluating the AI model...")
         evaluate_ai_model(ai_model, X_test, y_test)
+
+        # Save the trained AI model
+        ai_model.save("ai_phishing_model.h5")
+        logging.info("Saved trained AI model to 'ai_phishing_model.h5'.")
 
         # Optional: Plot training history
         logging.info("Plotting training history...")
