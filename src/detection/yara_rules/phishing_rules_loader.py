@@ -6,6 +6,7 @@ import logging
 import hashlib
 from tqdm import tqdm
 from concurrent.futures import ThreadPoolExecutor
+from update_phishing_data import update_phishing_lists
 
 # Paths and URLs
 YARA_RULES_FOLDER = "src/detection/yara_rules/phishing_rules/"
@@ -73,37 +74,6 @@ def file_hash(filepath):
         return None
 
 
-def update_phishing_lists():
-    """
-    Download and update phishing domain and URL lists.
-    """
-    os.makedirs(DATA_FOLDER, exist_ok=True)
-
-    # Download and extract domains
-    domains_tar = os.path.join(DATA_FOLDER, "ALL-phishing-domains.tar.gz")
-    download_file(DOMAINS_URL, domains_tar)
-    extract_tar_gz(domains_tar, DATA_FOLDER)
-
-    # Write extracted domains to domains.lst
-    extracted_domains_file = os.path.join(DATA_FOLDER, "ALL-phishing-domains.txt")
-    with open(extracted_domains_file, "r") as src, open(DOMAINS_FILE, "w") as dest:
-        domains = [line.strip() for line in src if line.strip()]
-        dest.writelines(f"{domain}\n" for domain in domains)
-    logging.info(f"Updated: {DOMAINS_FILE}")
-
-    # Download and extract URLs
-    urls_tar = os.path.join(DATA_FOLDER, "ALL-phishing-links.tar.gz")
-    download_file(URLS_URL, urls_tar)
-    extract_tar_gz(urls_tar, DATA_FOLDER)
-
-    # Write extracted URLs to urls.lst
-    extracted_urls_file = os.path.join(DATA_FOLDER, "ALL-phishing-links.txt")
-    with open(extracted_urls_file, "r") as src, open(URLS_FILE, "w") as dest:
-        urls = [line.strip() for line in src if line.strip()]
-        dest.writelines(f"{url}\n" for url in urls)
-    logging.info(f"Updated: {URLS_FILE}")
-
-
 def fetch_yara_rule_files():
     """
     Fetch the list of YARA rule files from the local index.txt file.
@@ -113,8 +83,36 @@ def fetch_yara_rule_files():
         with open(INDEX_FILE, "r", encoding="utf-8") as file:
             return file.read().splitlines()
     except FileNotFoundError:
-        logging.error(f"{INDEX_FILE} not found. Ensure it is placed in {YARA_RULES_FOLDER}.")
+        logging.warning(f"{INDEX_FILE} not found. Creating a new one.")
+        open(INDEX_FILE, "w").close()
         return []
+
+
+def update_index_file():
+    """
+    Update the index.txt file with all `.yar` files in the YARA_RULES_FOLDER.
+    Only adds new files to the index.
+    """
+    try:
+        # Get current `.yar` files in the folder
+        current_files = [f for f in os.listdir(YARA_RULES_FOLDER) if f.endswith(".yar")]
+
+        # Get files already listed in index.txt
+        indexed_files = fetch_yara_rule_files()
+
+        # Find new files to add
+        new_files = [f for f in current_files if f not in indexed_files]
+
+        # Update index.txt
+        if new_files:
+            with open(INDEX_FILE, "a", encoding="utf-8") as file:
+                for new_file in new_files:
+                    file.write(f"{new_file}\n")
+            logging.info(f"Updated {INDEX_FILE} with {len(new_files)} new files.")
+        else:
+            logging.info(f"No new files to add to {INDEX_FILE}.")
+    except Exception as e:
+        logging.error(f"Error updating {INDEX_FILE}: {e}")
 
 
 def is_file_updated(rule_file, destination):
@@ -187,6 +185,7 @@ if __name__ == "__main__":
     update_phishing_lists()
 
     logging.info("\nUpdating YARA rules...")
+    update_index_file()
     download_yara_rules()
 
     logging.info("\nCompiling YARA rules...")
