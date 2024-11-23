@@ -1,6 +1,11 @@
 import logging
 import argparse
-from src.detection.yara_rules.phishing_rules_loader import update_phishing_lists, download_yara_rules, compile_yara_rules
+from detection.yara_rules.phishing_rules_loader import update_phishing_lists, download_yara_rules, compile_yara_rules
+import sys
+import os
+
+# Add the `src` directory to the Python path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 # Configure logging
 log_level = "INFO"
