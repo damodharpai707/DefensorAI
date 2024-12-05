@@ -125,3 +125,8 @@ packages/react-devtools-fusebox/dist
 packages/react-devtools-inline/dist
 packages/react-devtools-shell/dist
 packages/react-devtools-timeline/dist
+detection/yara_rules/phishing_rules/index.txt
+detection/yara_rules/phishing_rules/yara_rules_phishing/
+data/phishing/
+data/Vectorized data
+DefensorAI/

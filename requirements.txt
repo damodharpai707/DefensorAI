@@ -1,71 +1,131 @@
-absl-py==2.1.0                  # Utilities for TensorFlow and AI models
-alembic==1.14.0                 # Database migrations for Optuna's optimization framework
-astunparse==1.6.3               # Required for TensorFlow graph generation
-certifi==2024.8.30              # Certificate verification for secure HTTPS requests
-charset-normalizer==3.4.0       # Encoding detection for HTTP requests via `requests`
-cloudpickle==3.1.0              # Serialization support for SHAP and ML workflows
-colorama==0.4.6                # Cross-platform terminal color output for tqdm
-colorlog==6.9.0                # Colored logging for Optuna optimization logs
-filelock==3.16.1               # File locking mechanism for Transformers library
-flatbuffers==24.3.25           # Lightweight serialization for TensorFlow operations
-fsspec==2024.10.0              # File system interface for handling remote files
-gast==0.6.0                    # TensorFlow symbolic math operations
-google-pasta==0.2.0            # TensorFlow model optimization and graph utilities
-greenlet==3.1.1                # Required by SQLAlchemy for asynchronous execution
-grpcio==1.68.0                 # gRPC protocol for TensorFlow distributed training
-h5py==3.12.1                   # HDF5 support for TensorFlow model serialization
-huggingface-hub==0.26.2        # Manage and download pretrained models (Transformers)
-idna==3.10                     # Domain name handling in HTTP requests (used by requests)
-joblib==1.4.2                  # Model persistence and parallel processing for ML
-keras==3.6.0                   # High-level deep learning library (TensorFlow backend)
-libclang==18.1.1               # TensorFlow XLA compilation for performance optimization
-llvmlite==0.43.0               # JIT compilation for Numba in SHAP feature explanations
-mako==1.3.6                    # Template rendering for Alembic database migrations
-markdown==3.7                  # Markdown rendering for TensorBoard logs
-markdown-it-py==3.0.0          # Markdown parsing for Rich text outputs
-markupsafe==3.0.2              # Prevents code injection in string rendering (Mako templates)
-mdurl==0.1.2                   # URL parsing for markdown rendering
-ml-dtypes==0.4.1               # Optimized data types for TensorFlow arrays
-namex==0.0.8                   # Naming utilities (required for Keras layers)
-numba==0.60.0                  # JIT compilation for SHAP feature importance calculations
-numpy==2.0.2                   # Core numerical computation for ML and AI models
-opt-einsum==3.4.0              # Tensor optimization for TensorFlow computations
-optree==0.13.1                 # Tree manipulation for Keras computations
-optuna==4.1.0                  # Hyperparameter optimization for ML models
-packaging==24.2                # Parsing and handling versions in Transformers and TensorFlow
-pandas==2.2.3                  # Data manipulation and preprocessing
-protobuf==5.28.3               # Serialization for TensorFlow and gRPC communications
-pygments==2.18.0               # Syntax highlighting for Rich logs
-python-dateutil==2.9.0.post0   # Date parsing for Pandas
-pytz==2024.2                   # Timezone handling for Pandas
-pyyaml==6.0.2                  # Configuration management for Optuna and Transformers
-regex==2024.11.6               # Advanced regex processing for Transformers and feature extraction
-requests==2.32.3               # HTTP client for fetching phishing datasets
-rich==13.9.4                   # Enhanced logging and pretty console output
-safetensors==0.4.5             # Secure storage for Transformer model weights
-scikit-learn==1.5.2            # Core ML library for Random Forest and preprocessing
-scipy==1.14.1                  # Scientific computing for optimization and distance metrics
-shap==0.46.0                   # Feature importance and interpretability for ML models
-six==1.16.0                    # Compatibility utilities for older Python versions (TensorFlow)
-slicer==0.0.8                  # Slicing utilities (used by SHAP)
-sqlalchemy==2.0.36             # Database ORM for Optuna
-tensorboard==2.18.0            # Visualization of TensorFlow training metrics
-tensorboard-data-server==0.7.2 # Data server for TensorBoard
-tensorflow==2.18.0             # Core AI library for deep learning models
-tensorflow-intel==2.18.0       # Optimized TensorFlow for Intel CPUs
-termcolor==2.5.0               # Colorized terminal output for TensorFlow warnings
-threadpoolctl==3.5.0           # Threadpool control for Scikit-learn parallelism
-tokenizers==0.20.3             # Fast tokenization for text-based Transformer models
-tqdm==4.67.0                   # Progress bar for data downloads and model training
-transformers==4.46.3           # Pretrained Transformer models for phishing detection
-typing-extensions==4.12.2      # Backport of typing features for older Python versions
-tzdata==2024.2                 # Timezone data for Pandas datetime processing
-urllib3==2.2.3                 # HTTP client for secure communication (used by requests)
-werkzeug==3.1.3                # WSGI server for TensorBoard
-wheel==0.45.0                  # Binary packaging format for Python libraries
-whois==1.20240129.2            # Fetch WHOIS information for domain analysis
-wrapt==1.17.0                  # Function wrapper utilities (used by TensorFlow)
-xgboost==2.1.2                 # Gradient boosting for phishing detection ML models
-yara==1.7.7                    # YARA rules engine for phishing detection
-matplotlib==3.9.2              #visualizing model performance, such as training accuracy, loss curves, and confusion matrices
-imblearn
+#
+# This file is autogenerated by pip-compile with Python 3.12
+# by the following command:
+#
+#    pip-compile requirements.in
+#
+absl-py==2.1.0
+    # via
+    #   keras
+    #   tensorboard
+    #   tensorflow-intel
+astunparse==1.6.3
+    # via tensorflow-intel
+certifi==2024.8.30
+    # via requests
+charset-normalizer==3.4.0
+    # via requests
+flatbuffers==24.3.25
+    # via tensorflow-intel
+gast==0.6.0
+    # via tensorflow-intel
+google-pasta==0.2.0
+    # via tensorflow-intel
+grpcio==1.68.0
+    # via
+    #   tensorboard
+    #   tensorflow-intel
+h5py==3.12.1
+    # via
+    #   keras
+    #   tensorflow-intel
+idna==3.10
+    # via requests
+joblib==1.4.2
+    # via scikit-learn
+keras==3.6.0
+    # via tensorflow-intel
+libclang==18.1.1
+    # via tensorflow-intel
+markdown==3.7
+    # via tensorboard
+markdown-it-py==3.0.0
+    # via rich
+markupsafe==3.0.2
+    # via werkzeug
+mdurl==0.1.2
+    # via markdown-it-py
+ml-dtypes==0.4.1
+    # via
+    #   keras
+    #   tensorflow-intel
+namex==0.0.8
+    # via keras
+numpy==2.0.2
+    # via
+    #   -r requirements.in
+    #   h5py
+    #   keras
+    #   ml-dtypes
+    #   pandas
+    #   scikit-learn
+    #   scipy
+    #   tensorboard
+    #   tensorflow-intel
+opt-einsum==3.4.0
+    # via tensorflow-intel
+optree==0.13.1
+    # via keras
+packaging==24.2
+    # via
+    #   keras
+    #   tensorboard
+    #   tensorflow-intel
+pandas==2.2.3
+    # via -r requirements.in
+protobuf==5.28.3
+    # via
+    #   tensorboard
+    #   tensorflow-intel
+pygments==2.18.0
+    # via rich
+python-dateutil==2.9.0.post0
+    # via pandas
+pytz==2024.2
+    # via pandas
+requests==2.32.3
+    # via
+    #   -r requirements.in
+    #   tensorflow-intel
+rich==13.9.4
+    # via keras
+scikit-learn==1.5.2
+    # via -r requirements.in
+scipy==1.14.1
+    # via scikit-learn
+six==1.16.0
+    # via
+    #   astunparse
+    #   google-pasta
+    #   python-dateutil
+    #   tensorboard
+    #   tensorflow-intel
+tensorboard==2.18.0
+    # via tensorflow-intel
+tensorboard-data-server==0.7.2
+    # via tensorboard
+tensorflow==2.18.0
+    # via -r requirements.in
+tensorflow-intel==2.18.0
+    # via tensorflow
+termcolor==2.5.0
+    # via tensorflow-intel
+threadpoolctl==3.5.0
+    # via scikit-learn
+typing-extensions==4.12.2
+    # via
+    #   optree
+    #   tensorflow-intel
+tzdata==2024.2
+    # via pandas
+urllib3==2.2.3
+    # via requests
+werkzeug==3.1.3
+    # via tensorboard
+wheel==0.45.1
+    # via astunparse
+wrapt==1.17.0
+    # via tensorflow-intel
+
+# The following packages are considered to be unsafe in a requirements file:
+# setuptools
